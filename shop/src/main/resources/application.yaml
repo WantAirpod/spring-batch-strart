@@ -1,9 +1,15 @@
+
 server:
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    accept-count: 100
   port: 8082
 
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: trace
     org.hibernate.type: trace
 
 spring:
@@ -24,7 +30,7 @@ spring:
     properties:
       hibernate:
         #        show_sql: true
-        format_sql: true
+        format_sql: false
   h2:
     console:
       enabled: true

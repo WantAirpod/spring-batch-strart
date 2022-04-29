@@ -38,8 +38,7 @@ public class CsvParser  {
             connection = DriverManager.getConnection(jdbcURL, username, password);
             connection.setAutoCommit(false);
 
-            //String sql = "insert into item(id,name,price,stock) " + "VALUES ('id', 'name', 'price', 'stock')";
-            String sql = "insert into item(id,name,price,stock) " + "VALUES ( ? , ? , ? , ?)";
+            String sql = "insert into item(item_id,name,price,stock) " + "VALUES ( ? , ? , ? , ?)";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             int columnSize = 4; //CSV 데이터 필드 컬럼 갯수
@@ -54,13 +53,11 @@ public class CsvParser  {
                 statement.addBatch();
                 if (row % batchSize == 0) {
                     statement.executeBatch();
-                    System.out.println(String.format("statement.executeBatch ing row ==> %s", row));
+                    //System.out.println(String.format("statement.executeBatch ing row ==> %s", row));
                     connection.commit(); //DB서버 부하분산을 원하는 대용량 처리시 중간중간 커밋
                     sleep(1); //부하 분산
                 }
             }
-            //남아있는 데이터 처리
-            System.out.println("나머지 데이터도 executeBatch ");
             statement.executeBatch();
             connection.commit();
             connection.close();
@@ -89,8 +86,8 @@ public class CsvParser  {
             CSVParser parser = CSVFormat.EXCEL.withFirstRecordAsHeader().withQuote('"').parse(bufferedReader);
             //엑셀타입 & 쌍따옴표 escape처리
             List<CSVRecord> records = parser.getRecords();
-            log.debug("\nCSV 헤더\n\t{}\n데이터 샘플\n\t{}\n", parser.getHeaderMap(), records.get(sampleDataRow));
-            log.info("\n\t헤더 필드 갯수 :{}\n\t데이터 갯수 :{}\n\t{}번째 row의 데이터 필드 갯수:{}\n\n", parser.getHeaderMap().size(), records.size(), sampleDataRow, records.get(sampleDataRow).size());
+            //log.debug("\nCSV 헤더\n\t{}\n데이터 샘플\n\t{}\n", parser.getHeaderMap(), records.get(sampleDataRow));
+            //log.info("\n\t헤더 필드 갯수 :{}\n\t데이터 갯수 :{}\n\t{}번째 row의 데이터 필드 갯수:{}\n\n", parser.getHeaderMap().size(), records.size(), sampleDataRow, records.get(sampleDataRow).size());
             return records; }
     }
 }
