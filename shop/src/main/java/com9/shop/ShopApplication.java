@@ -25,7 +25,7 @@ public class ShopApplication {
 		CsvParser csvParser = new CsvParser();
 		csvParser.parser();
 		CalculateItem calculateItem = new CalculateItem();
-		
+
 		//print
 		System.out.println("입력(o[order]: 주문, q[quit]: 종료 : ");
 		Scanner sc = new Scanner(System.in);
